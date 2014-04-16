@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# Name:        IV plotting test script for Maynuo eload
+# Name:        IV tracking test script for Maynuo eload
 # Purpose:
 #
 # Author:      Derryn Harvie
@@ -19,7 +19,7 @@ def main():
     testCurrent = startCurrent
 
     load = Maynuo.Maynuo(19,57600,1)
-    load.setCurrent(testCurrent)
+    load.setCCurrent(testCurrent)
     load.setInputOn()
     time.sleep(stepDelayTime)
 
@@ -36,7 +36,7 @@ def main():
         testCurrent += stepCurrent
         if(testCurrent > stopCurrent):
             break
-        load.setCurrent(testCurrent)
+        load.setCCurrent(testCurrent)
         time.sleep(stepDelayTime)
 
     load.setInputOff()

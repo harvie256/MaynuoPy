@@ -53,28 +53,47 @@ class Maynuo:
         self.commPort.write(packetWithCRC)
         time.sleep(0.05)
 
-    def getOperatingPoint(self):
+    def readRegister(self, startAddress, noOfBytes):
         packet = self.slaveAddress
-        packet += ''.join(chr(x) for x in [0x03, 0x0B, 0x00, 0x00, 0x04])
-        packetWithCRC = self.addCRC(packet)
+        adr_H = startAddress >> 8
+        adr_L = startAddress & 0xFF
+        noOfBytes_H = noOfBytes >> 8
+        noOfBytes_L = noOfBytes & 0xFF
+        packet += ''.join(chr(x) for x in [0x03, adr_H, adr_L, noOfBytes_H, noOfBytes_L])
         self.commPort.flushInput()
+        packetWithCRC = self.addCRC(packet)
         self.commPort.write(packetWithCRC)
         ret = self.commPort.read(3)
         numberOfBytes = ord(ret[2]) + 2
-        ret = self.commPort.read(numberOfBytes)
+        return self.commPort.read(numberOfBytes)
 
+    def getOperatingPoint(self):
+        ret = self.readRegister(0x0B00, 4)
         floatStr = ret[0:4]
         voltage = struct.unpack('f', floatStr[::-1])
         floatStr = ret[4:8]
         current = struct.unpack('f', floatStr[::-1])
-
         return OperatingPoint(voltage[0],current[0])
 
-    def setCurrent(self, current=0):
+    def setCCurrent(self, current=0):
         valueAsStr = struct.pack('f', current)
         data = valueAsStr[::-1]
         self.writeRegister(0x0A01,data)
         command = ''.join(chr(x) for x in [0x00, 0x01])
+        self.writeRegister(0x0A00, command)
+
+    def setCPower(self, power=0):
+        valueAsStr = struct.pack('f', power)
+        data = valueAsStr[::-1]
+        self.writeRegister(0x0A05,data)
+        command = ''.join(chr(x) for x in [0x00, 0x03])
+        self.writeRegister(0x0A00, command)
+
+    def setCVoltage(self, voltage=0):
+        valueAsStr = struct.pack('f', voltage)
+        data = valueAsStr[::-1]
+        self.writeRegister(0x0A03,data)
+        command = ''.join(chr(x) for x in [0x00, 0x02])
         self.writeRegister(0x0A00, command)
 
     def setInputOn(self):
