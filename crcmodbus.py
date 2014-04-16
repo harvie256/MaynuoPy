@@ -1,3 +1,10 @@
+#* Attr: from http://www.digi.com/wiki/developer/index.php/Python_CRC16_Modbus_DF1
+#*          No licence indicated....
+#*
+#*              File: CRC16.PY
+#*              CRC-16 (reverse) table lookup for Modbus or DF1
+#*
+
 INITIAL_MODBUS = 0xFFFF
 INITIAL_DF1 = 0x0000
 
