@@ -8,7 +8,6 @@
 # Licence:     Public Domain
 #-------------------------------------------------------------------------------
 import Maynuo, time, sys
-from decimal import *
 
 dischargePower = 2.5
 stopVoltage = 3.1
