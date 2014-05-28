@@ -12,7 +12,7 @@ import Maynuo, time, sys
 
 def main():
     startCurrent = 0.0
-    stopCurrent = 1.0
+    stopCurrent = 4.6
     stepCurrent = 0.01
     stepDelayTime = 0.5
 

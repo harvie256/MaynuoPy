@@ -28,9 +28,10 @@ class OperatingPoint:
 
 class Maynuo:
 
-    def __init__(self, serial_port, serial_baud, slave_address):
+    def __init__(self, serial_port, serial_baud, slave_address, reg_write_delay=0.05):
         self.commPort = serial.Serial(serial_port, serial_baud, timeout=1)
         self.slaveAddress = chr(slave_address)
+        self.registerWriteDelay = reg_write_delay
 
     def addCRC(self, pack):
         crc = crcmodbus.INITIAL_MODBUS
@@ -51,7 +52,7 @@ class Maynuo:
         packet += data
         packetWithCRC = self.addCRC(packet)
         self.commPort.write(packetWithCRC)
-        time.sleep(0.05)
+        time.sleep(self.registerWriteDelay)
 
     def readRegister(self, startAddress, noOfBytes):
         packet = self.slaveAddress

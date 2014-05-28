@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 def main():
     startCurrent = 0.0
-    stopCurrent = 1.0
+    stopCurrent = 4.60
     stepCurrent = 0.01
     stepDelayTime = 0.5
 
@@ -48,7 +48,7 @@ def main():
     print('IV sweep complete')
 
     plt.plot(I_List,V_List,'r-')
-    plt.title('IPod USB charger (1A rated)')
+    plt.title('85W magsafe charger (18.5V @ 4.6A rated)')
     plt.xlabel('Current (A)')
     plt.ylabel('Voltage (V)')
     plt.grid(True)
