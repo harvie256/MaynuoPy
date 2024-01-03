@@ -47,11 +47,13 @@ class Maynuo:
         adr1 = startAddress >> 8
         adr2 = startAddress & 0xFF
         noOfBytes = len(data)
-        noOfReg = len(data)/2
+        noOfReg = int(len(data) / 2)  # Convert to integer
         packet += ''.join(chr(x) for x in [0x10, adr1, adr2, 0x00, noOfReg, noOfBytes])
+        if isinstance(data, bytes):
+            data = data.decode('latin-1')  # Convert bytes to str
         packet += data
         packetWithCRC = self.addCRC(packet)
-        self.commPort.write(packetWithCRC)
+        self.commPort.write(packetWithCRC.encode('latin-1'))
         time.sleep(self.registerWriteDelay)
 
     def readRegister(self, startAddress, noOfBytes):
